@@ -1,0 +1,117 @@
+HEALTH INSURANCE POLICY DOCUMENT
+
+Policy Number: POL-USA-2024-12345
+Effective Date: January 1, 2024
+Expiration Date: December 31, 2024
+
+POLICYHOLDER INFORMATION
+Name: Sarah Johnson
+Date of Birth: 05/15/1985
+Address: 123 Main Street, Apartment 4B, New York, NY 10001
+Email: sarah.johnson@email.com
+Phone: (555) 123-4567
+
+INSURANCE CARRIER
+Company: American Health Insurance Co.
+Policy Type: Individual Health Insurance - Gold Plan
+Plan Name: HealthGuard Gold PPO
+Group Number: N/A (Individual Policy)
+Member ID: MEM-445566-2024
+
+COVERAGE SUMMARY
+Annual Premium: $6,500.00 (paid monthly: $541.67)
+Coverage Amount: Up to $2,000,000 lifetime maximum
+Network Type: Preferred Provider Organization (PPO)
+
+COST SHARING
+Annual Deductible (Individual): $1,000.00
+Out-of-Pocket Maximum: $6,000.00
+Coinsurance: 80/20 (Insurance pays 80%, you pay 20%)
+
+PRIMARY CARE COPAY
+Office Visit: $25.00
+Preventive Care: $0.00 (covered at 100%)
+Urgent Care: $50.00
+Emergency Room: $250.00
+
+SPECIALIST CARE
+Specialist Visit: $50.00 copay
+Surgery (Inpatient): 80% covered after deductible
+Surgery (Outpatient): 80% covered after deductible
+
+PRESCRIPTION DRUG COVERAGE
+Tier 1 (Generic): $10.00 copay
+Tier 2 (Preferred Brand): $35.00 copay
+Tier 3 (Non-Preferred Brand): $60.00 copay
+Tier 4 (Specialty): 20% coinsurance, max $200/prescription
+
+DIAGNOSTIC SERVICES
+Lab Tests: 80% covered after deductible
+X-Rays: 80% covered after deductible
+CT/MRI Scans: 80% covered after deductible (pre-authorization required)
+Ultrasound: 80% covered after deductible
+
+HOSPITAL SERVICES
+Inpatient Hospital Stay: 80% covered after deductible
+Emergency Room: $250 copay, then 80% covered
+Ambulance: 80% covered after deductible
+
+MENTAL HEALTH & SUBSTANCE ABUSE
+Outpatient Therapy: $25 copay per visit
+Inpatient Treatment: 80% covered after deductible
+
+MATERNITY & NEWBORN CARE
+Prenatal Care: Covered at 100%
+Delivery & Inpatient Care: 80% covered after deductible
+Newborn Care: Covered same as any dependent
+
+COVERED SERVICES
+✓ Preventive care and wellness visits
+✓ Primary care and specialist visits
+✓ Emergency and urgent care
+✓ Hospitalization and surgery
+✓ Prescription drugs
+✓ Lab tests and X-rays
+✓ Mental health services
+✓ Maternity care
+✓ Physical therapy (up to 30 visits/year)
+✓ Chiropractic care (up to 20 visits/year)
+✓ Durable medical equipment
+
+EXCLUSIONS (Not Covered)
+✗ Cosmetic surgery or procedures
+✗ Experimental or investigational treatments
+✗ Acupuncture
+✗ Weight loss programs
+✗ Infertility treatments
+✗ Dental care (except injury-related)
+✗ Vision care (routine eye exams)
+✗ Long-term care
+✗ Services not medically necessary
+
+BENEFICIARIES
+Primary: Michael Johnson (Spouse) - 100%
+Contingent: Emma Johnson (Daughter) - 100%
+
+NETWORK PROVIDERS
+In-Network: Over 50,000 providers nationwide
+Out-of-Network: Covered at 60% after $2,000 deductible
+
+CUSTOMER SERVICE
+Phone: 1-800-HEALTH1 (1-800-432-5841)
+Hours: Monday-Friday, 8 AM - 8 PM EST
+Website: www.americanhealthins.com
+Member Portal: portal.americanhealthins.com
+
+IMPORTANT NOTES
+- Pre-authorization required for: CT/MRI scans, inpatient surgery, specialty medications
+- Referrals NOT required for specialists (PPO plan)
+- Out-of-network services have higher cost-sharing
+- Policy renews annually; rates subject to change
+- Grace period for premium payment: 30 days
+
+Policy Issued: January 1, 2024
+Underwritten by: American Health Insurance Co.
+Policy Version: AH-GOLD-PPO-2024-v3.1
+
+This is a summary of benefits. For complete terms and conditions, refer to the full policy document.

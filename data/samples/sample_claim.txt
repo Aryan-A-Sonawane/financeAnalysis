@@ -1,0 +1,61 @@
+MEDICAL INSURANCE CLAIM FORM
+
+Claim Number: CLM-2024-98765
+Policy Number: POL-USA-2024-12345
+Date Filed: December 16, 2024
+
+PATIENT INFORMATION
+Name: Sarah Johnson
+Date of Birth: 05/15/1985
+Account Number: PAT-445566
+Policy Holder: Sarah Johnson
+
+PROVIDER INFORMATION
+Provider Name: City Medical Center
+Provider NPI: 1234567890
+Provider Address: 789 Healthcare Blvd, New York, NY 10003
+Provider Phone: (212) 555-0199
+
+SERVICE DETAILS
+Date of Service: December 10, 2024
+Place of Service: Outpatient Clinic
+Type of Service: Preventive Care & Lab Tests
+
+DIAGNOSIS CODES (ICD-10)
+- Z00.00 - Encounter for general adult medical examination
+- E11.9 - Type 2 diabetes mellitus without complications
+- I10 - Essential (primary) hypertension
+
+PROCEDURE CODES (CPT)
+- 99213 - Office visit, established patient, level 3
+- 80053 - Comprehensive metabolic panel
+- 85025 - Complete blood count with differential
+- 82947 - Glucose; quantitative, blood
+
+CHARGES
+Office Visit (99213): $175.00
+Comprehensive Metabolic Panel (80053): $85.00
+Complete Blood Count (85025): $65.00
+Glucose Test (82947): $45.00
+
+Total Charged: $370.00
+Insurance Allowable: $320.00
+Deductible Applied: $50.00
+Coinsurance (20%): $54.00
+Copay: $25.00
+
+Insurance Payment: $191.00
+Patient Responsibility: $129.00
+
+CLAIM STATUS: APPROVED
+Authorization Number: AUTH-2024-556677
+Processed Date: December 14, 2024
+
+REMARKS
+- Annual wellness visit covered at 100% after copay
+- Lab tests subject to deductible and coinsurance
+- Patient has met $500 of $1,000 annual deductible
+- Remaining deductible: $450.00
+
+Provider Signature: Dr. Michael Chen, MD
+Date: December 10, 2024

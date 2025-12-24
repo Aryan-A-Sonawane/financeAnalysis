@@ -37,7 +37,6 @@ def configure_logging() -> None:
             + [
                 structlog.dev.ConsoleRenderer(
                     colors=True,
-                    exception_formatter=structlog.dev.RichTraceback(),
                 )
             ],
             wrapper_class=structlog.stdlib.BoundLogger,

@@ -16,7 +16,7 @@ sqlalchemy==2.0.23
 asyncpg==0.29.0
 
 # NebulaGraph
-nebula3-python==3.6.0
+nebula3-python==3.8.3
 
 # Weaviate
 weaviate-client==3.25.3

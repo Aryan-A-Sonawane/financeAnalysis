@@ -1,0 +1,57 @@
+# API Testing Collection for Postman/Thunder Client
+
+## 1. Register User
+POST http://localhost:8000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "demo@example.com",
+  "password": "SecurePassword123!",
+  "full_name": "Demo User"
+}
+
+---
+
+## 2. Login
+POST http://localhost:8000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "demo@example.com",
+  "password": "SecurePassword123!"
+}
+
+# Copy the access_token from response
+
+---
+
+## 3. Upload Document
+POST http://localhost:8000/api/v1/documents/upload
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: multipart/form-data
+
+# Upload file: test_invoice.txt or any PDF/image
+
+---
+
+## 4. List Documents
+GET http://localhost:8000/api/v1/documents/?limit=10
+Authorization: Bearer YOUR_TOKEN_HERE
+
+---
+
+## 5. Get Document Details
+GET http://localhost:8000/api/v1/documents/{document_id}
+Authorization: Bearer YOUR_TOKEN_HERE
+
+---
+
+## 6. Extract Entities (Manual)
+POST http://localhost:8000/api/v1/extraction/extract
+Authorization: Bearer YOUR_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "text": "Policy Number: POL-123456. Coverage: $500,000. Deductible: $1,000",
+  "document_type": "policy"
+}

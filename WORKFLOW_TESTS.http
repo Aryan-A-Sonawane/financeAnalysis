@@ -1,0 +1,246 @@
+### FinSightAI - LangGraph Workflow API Tests
+### Test file for LangGraph AI agent workflows
+### Requires: VS Code REST Client extension
+
+@baseUrl = http://localhost:8000/api/v1
+@token = YOUR_JWT_TOKEN_HERE
+
+### 1. Health Check
+GET http://localhost:8000/health HTTP/1.1
+
+### 2. Get API Info
+GET {{baseUrl}}/ HTTP/1.1
+
+###############################################
+### WORKFLOW ENDPOINTS
+###############################################
+
+### 3. Process Document - Invoice Workflow
+POST {{baseUrl}}/workflows/process-document HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "document_id": "test-invoice-001",
+  "document_text": "INVOICE #INV-2024-001\n\nBill To: John Doe\n123 Main St, Anytown, USA\n\nProvider: ABC Medical Center\nDate: January 15, 2024\n\nServices:\n- Office Visit (CPT 99213): $150.00\n- Lab Work (CPT 80053): $75.00\n- X-Ray (CPT 71020): $200.00\n\nSubtotal: $425.00\nTax (8%): $34.00\nTotal Amount Due: $459.00\n\nPayment Terms: Net 30\nDue Date: February 15, 2024",
+  "run_fraud_detection": true,
+  "run_compliance_check": true
+}
+
+### 4. Process Document - Insurance Policy Workflow
+POST {{baseUrl}}/workflows/process-document HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "document_id": "test-policy-001",
+  "document_text": "HEALTH INSURANCE POLICY\n\nPolicy Number: POL-2024-ABC123\nPolicy Holder: Jane Smith\nEffective Date: January 1, 2024\nInsurance Company: HealthCare Plus\n\nPremium: $450/month\nDeductible: $2,000 annual\nOut-of-Pocket Maximum: $6,000\nCoinsurance: 80/20 after deductible\n\nCoverages:\n- Preventive Care: 100% covered\n- Primary Care Visits: $25 copay\n- Specialist Visits: $50 copay\n- Emergency Room: $300 copay + 20% coinsurance\n- Hospitalization: 80% covered after deductible\n- Prescription Drugs: Tier 1 $10, Tier 2 $30, Tier 3 $60\n\nExclusions:\n- Cosmetic procedures\n- Experimental treatments\n- Out-of-network providers (except emergencies)\n\nNetwork: PPO Network\nBeneficiaries: John Smith (Spouse), Mary Smith (Daughter)",
+  "run_fraud_detection": true,
+  "run_compliance_check": true
+}
+
+### 5. Process Document - Claims Form Workflow
+POST {{baseUrl}}/workflows/process-document HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "document_id": "test-claim-001",
+  "document_text": "INSURANCE CLAIM FORM\n\nClaim Number: CLM-2024-5678\nPatient: Robert Johnson\nPolicy Number: POL-2024-XYZ789\nDate of Service: February 10, 2024\n\nProvider: City Hospital Emergency Department\nDiagnosis: Acute appendicitis (ICD-10: K35.80)\n\nProcedures:\n- Emergency room visit (CPT 99285): $800.00\n- Appendectomy, laparoscopic (CPT 44970): $5,200.00\n- Anesthesia services (CPT 00840): $1,100.00\n- Post-op care (CPT 99024): $0.00\n\nTotal Charges: $7,100.00\n\nInsurance Information:\n- Insurance Paid: $5,680.00 (80% after deductible)\n- Deductible Applied: $500.00\n- Coinsurance (20%): $1,420.00\n- Patient Responsibility: $1,920.00\n\nClaim Status: Approved with partial payment\nRecommendation: Patient to pay remaining balance",
+  "run_fraud_detection": true,
+  "run_compliance_check": true
+}
+
+### 6. Check Eligibility - Standard Coverage
+POST {{baseUrl}}/workflows/check-eligibility HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_info": {
+    "policy_number": "POL-2024-ABC123",
+    "policy_holder": "Jane Smith",
+    "insurance_company": "HealthCare Plus",
+    "premium": 450,
+    "deductible": 2000,
+    "out_of_pocket_max": 6000,
+    "coinsurance": 0.8,
+    "network_type": "PPO",
+    "coverages": [
+      "Primary Care: $25 copay",
+      "Specialist: $50 copay",
+      "Emergency: $300 copay + 20% coinsurance",
+      "Hospitalization: 80% after deductible"
+    ]
+  },
+  "service_info": {
+    "service_type": "Specialist Visit",
+    "procedure_code": "99214",
+    "provider": "Dr. Smith - Cardiologist",
+    "estimated_cost": 250,
+    "service_date": "2024-03-01",
+    "diagnosis": "Hypertension (ICD-10: I10)"
+  },
+  "patient_info": {
+    "patient_name": "Jane Smith",
+    "patient_id": "PAT-12345",
+    "date_of_birth": "1985-06-15",
+    "relationship_to_holder": "Self",
+    "current_deductible_met": 500,
+    "current_out_of_pocket": 800
+  }
+}
+
+### 7. Check Eligibility - High-Cost Procedure
+POST {{baseUrl}}/workflows/check-eligibility HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_info": {
+    "policy_number": "POL-2024-XYZ789",
+    "policy_holder": "John Doe",
+    "insurance_company": "MegaHealth Insurance",
+    "premium": 650,
+    "deductible": 3000,
+    "out_of_pocket_max": 8000,
+    "coinsurance": 0.7,
+    "network_type": "HMO",
+    "coverages": [
+      "Surgery: 70% after deductible",
+      "Hospital stay: 70% after deductible",
+      "Prior authorization required for procedures >$5000"
+    ],
+    "exclusions": [
+      "Out-of-network providers"
+    ]
+  },
+  "service_info": {
+    "service_type": "Inpatient Surgery",
+    "procedure_code": "27447",
+    "procedure_description": "Total knee arthroplasty",
+    "provider": "Orthopedic Surgical Center",
+    "network_status": "In-network",
+    "estimated_cost": 25000,
+    "service_date": "2024-04-15",
+    "diagnosis": "Severe osteoarthritis (ICD-10: M17.0)",
+    "medical_necessity": "Conservative treatments failed, patient unable to walk"
+  },
+  "patient_info": {
+    "patient_name": "John Doe",
+    "patient_id": "PAT-67890",
+    "date_of_birth": "1960-03-20",
+    "relationship_to_holder": "Self",
+    "current_deductible_met": 1200,
+    "current_out_of_pocket": 2500
+  }
+}
+
+### 8. Get Workflow Status
+GET {{baseUrl}}/workflows/status/WORKFLOW_ID_HERE HTTP/1.1
+Authorization: Bearer {{token}}
+
+### 9. Get Workflow History (Recent 10)
+GET {{baseUrl}}/workflows/history?limit=10 HTTP/1.1
+Authorization: Bearer {{token}}
+
+### 10. Get Workflow History (Completed Only)
+GET {{baseUrl}}/workflows/history?limit=20&status=completed HTTP/1.1
+Authorization: Bearer {{token}}
+
+### 11. Get Workflow History (Failed Only)
+GET {{baseUrl}}/workflows/history?status=failed HTTP/1.1
+Authorization: Bearer {{token}}
+
+### 12. Clear Workflow History (Admin)
+DELETE {{baseUrl}}/workflows/clear-history HTTP/1.1
+Authorization: Bearer {{token}}
+
+###############################################
+### DOCUMENT UPLOAD WITH WORKFLOW
+###############################################
+
+### 13. Upload Document with Workflow Processing
+# Note: This is a multipart/form-data request
+# Replace with actual file upload
+POST {{baseUrl}}/documents/upload?use_workflow=true HTTP/1.1
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary
+
+------WebKitFormBoundary
+Content-Disposition: form-data; name="file"; filename="sample_invoice.pdf"
+Content-Type: application/pdf
+
+[Binary file content here]
+------WebKitFormBoundary--
+
+###############################################
+### COMPLEX WORKFLOW SCENARIOS
+###############################################
+
+### 14. Fraud Detection Test - Suspicious Claim
+POST {{baseUrl}}/workflows/process-document HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "document_id": "test-fraud-001",
+  "document_text": "INSURANCE CLAIM FORM\n\nClaim Number: CLM-2024-9999\nPatient: Anonymous Patient\nDate of Service: February 29, 2024\n\nProvider: QuickCare Clinic (Provider ID: 000000)\n\nProcedures:\n- Office visit level 5 (CPT 99215): $300.00 x 5 visits same day\n- Complex procedure (CPT 99999): $9,999.00\n- Duplicate billing (CPT 99213): $150.00 x 3\n- Upcoded service (CPT 99205): $400.00 (billed as new patient, actually established)\n\nTotal Charges: $12,399.00\n\nRed Flags:\n- Multiple high-level visits same day\n- Invalid procedure code\n- Duplicate billing\n- Possible upcoding\n- Weekend billing for non-emergency\n- Provider has no medical license on file",
+  "run_fraud_detection": true,
+  "run_compliance_check": true
+}
+
+### 15. Compliance Test - HIPAA Violations
+POST {{baseUrl}}/workflows/process-document HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "document_id": "test-compliance-001",
+  "document_text": "MEDICAL RECORD - SHARED VIA EMAIL\n\nPatient: John Smith (SSN: 123-45-6789)\nDOB: 01/15/1980\nAddress: 123 Main St, Anytown, USA\n\nMedical History:\n- HIV positive (disclosed without consent)\n- Mental health treatment for depression\n- Substance abuse history\n\nInsurance: Medicare Part A\nClaim submitted without prior authorization\nNo consent form on file\nPatient record shared with unauthorized third party\n\nCompliance Issues:\n- PHI disclosed via unsecured email\n- SSN visible in document\n- Sensitive diagnoses disclosed\n- Missing patient consent\n- No authorization for Medicare claim\n- HIPAA violation - unauthorized disclosure",
+  "run_fraud_detection": false,
+  "run_compliance_check": true
+}
+
+### 16. Eligibility Test - Denied Coverage
+POST {{baseUrl}}/workflows/check-eligibility HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_info": {
+    "policy_number": "POL-2024-BASIC",
+    "policy_holder": "Budget Plan User",
+    "insurance_company": "BasicCare",
+    "premium": 150,
+    "deductible": 5000,
+    "out_of_pocket_max": 10000,
+    "coinsurance": 0.5,
+    "network_type": "HMO",
+    "exclusions": [
+      "Cosmetic procedures",
+      "Experimental treatments",
+      "Out-of-network care",
+      "Elective procedures"
+    ]
+  },
+  "service_info": {
+    "service_type": "Cosmetic Surgery",
+    "procedure_code": "15824",
+    "procedure_description": "Rhinoplasty (nose job)",
+    "provider": "Cosmetic Surgery Center",
+    "network_status": "Out-of-network",
+    "estimated_cost": 8000,
+    "service_date": "2024-05-01",
+    "diagnosis": "Deviated septum (cosmetic complaint, not breathing issues)",
+    "medical_necessity": "Patient wants cosmetic improvement"
+  },
+  "patient_info": {
+    "patient_name": "Budget Plan User",
+    "patient_id": "PAT-99999",
+    "date_of_birth": "1990-08-10",
+    "relationship_to_holder": "Self",
+    "current_deductible_met": 0,
+    "current_out_of_pocket": 0
+  }
+}

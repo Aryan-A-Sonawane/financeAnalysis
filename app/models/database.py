@@ -8,6 +8,7 @@ from sqlalchemy import (
     BigInteger,
     Boolean,
     Column,
+    Float,
     ForeignKey,
     Integer,
     String,
@@ -56,7 +57,13 @@ class Document(Base):
     processed = Column(Boolean, default=False)
     processing_status = Column(String(50))
     error_message = Column(Text)
-    metadata = Column(JSONB)
+    document_metadata = Column(JSONB)
+    
+    # Extracted content
+    extracted_text = Column(Text)
+    extracted_entities = Column(JSONB)
+    medical_codes = Column(JSONB)
+    classification_confidence = Column(Float)
 
     # Relationships
     user = relationship("User", back_populates="documents")

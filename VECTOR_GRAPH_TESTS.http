@@ -1,0 +1,527 @@
+### FinSightAI - Vector & Graph Database Tests
+### Test file for semantic search and knowledge graph queries
+### Requires: VS Code REST Client extension
+
+@baseUrl = http://localhost:8000/api/v1
+@token = YOUR_JWT_TOKEN_HERE
+
+### 1. Health Check
+GET http://localhost:8000/health HTTP/1.1
+
+###############################################
+### SEMANTIC SEARCH TESTS
+###############################################
+
+### 2. Semantic Search - Policy Query
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "What are my options for high deductible health plans with HSA compatibility?",
+  "document_type": "policy",
+  "limit": 10,
+  "min_certainty": 0.7
+}
+
+### 3. Semantic Search - Claims Query
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "Find claims related to diabetes treatment and medication",
+  "document_type": "claim_form",
+  "limit": 15,
+  "min_certainty": 0.65
+}
+
+### 4. Semantic Search - Invoice Query
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "Emergency room visits with surgical procedures",
+  "document_type": "invoice",
+  "limit": 10,
+  "min_certainty": 0.75
+}
+
+### 5. Semantic Search - All Document Types
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "cardiac catheterization procedures and costs",
+  "limit": 20,
+  "min_certainty": 0.7
+}
+
+###############################################
+### HYBRID SEARCH TESTS
+###############################################
+
+### 6. Hybrid Search - Balanced (50/50)
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "maternity coverage prenatal care",
+  "alpha": 0.5,
+  "document_type": "policy",
+  "limit": 10
+}
+
+### 7. Hybrid Search - Vector Heavy (80/20)
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "chronic disease management programs",
+  "alpha": 0.8,
+  "document_type": "policy",
+  "limit": 10
+}
+
+### 8. Hybrid Search - Keyword Heavy (20/80)
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "CPT 99214 office visit established patient",
+  "alpha": 0.2,
+  "limit": 15
+}
+
+### 9. Hybrid Search - Pure Vector (100% semantic)
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "preventive care screenings covered at no cost",
+  "alpha": 1.0,
+  "document_type": "policy",
+  "limit": 10
+}
+
+### 10. Hybrid Search - Pure Keyword (100% exact match)
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "deductible coinsurance out-of-pocket maximum",
+  "alpha": 0.0,
+  "document_type": "policy",
+  "limit": 10
+}
+
+###############################################
+### SIMILAR DOCUMENT TESTS
+###############################################
+
+### 11. Find Similar Documents
+GET {{baseUrl}}/search/similar/DOCUMENT_ID_HERE?limit=5&min_certainty=0.7 HTTP/1.1
+Authorization: Bearer {{token}}
+
+### 12. Find Similar Documents - Higher Threshold
+GET {{baseUrl}}/search/similar/DOCUMENT_ID_HERE?limit=10&min_certainty=0.85 HTTP/1.1
+Authorization: Bearer {{token}}
+
+###############################################
+### KNOWLEDGE GRAPH QUERIES
+###############################################
+
+### 13. Entity Relationships - Outgoing
+POST {{baseUrl}}/search/graph/relationships HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "entity_id": "doc-123:policy:POL-2024-ABC123",
+  "relationship_type": "covers",
+  "direction": "out"
+}
+
+### 14. Entity Relationships - Incoming
+POST {{baseUrl}}/search/graph/relationships HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "entity_id": "doc-456:procedure_code:99214",
+  "relationship_type": "covers",
+  "direction": "in"
+}
+
+### 15. Entity Relationships - Bidirectional (All)
+POST {{baseUrl}}/search/graph/relationships HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "entity_id": "doc-789:patient:John_Smith",
+  "direction": "both"
+}
+
+### 16. Entity Relationships - Specific Type
+POST {{baseUrl}}/search/graph/relationships HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "entity_id": "doc-123:claim:CLM-2024-5678",
+  "relationship_type": "diagnoses",
+  "direction": "out"
+}
+
+###############################################
+### COVERAGE PATH QUERIES
+###############################################
+
+### 17. Coverage Path - Office Visit
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "POL-2024-ABC123",
+  "service_code": "99214",
+  "max_hops": 3
+}
+
+### 18. Coverage Path - Specialist Visit
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "POL-2024-ABC123",
+  "service_code": "99244",
+  "max_hops": 4
+}
+
+### 19. Coverage Path - Surgical Procedure
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "POL-2024-ABC123",
+  "service_code": "27447",
+  "max_hops": 3
+}
+
+### 20. Coverage Path - Lab Work
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "POL-2024-ABC123",
+  "service_code": "80053",
+  "max_hops": 2
+}
+
+### 21. Coverage Path - Imaging
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "POL-2024-ABC123",
+  "service_code": "71020",
+  "max_hops": 3
+}
+
+###############################################
+### SIMILAR CLAIMS QUERIES
+###############################################
+
+### 22. Similar Claims - Diabetes Management
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["E11.9", "E11.65"],
+  "procedure_codes": ["99214", "82947", "82950"],
+  "limit": 10
+}
+
+### 23. Similar Claims - Hypertension
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["I10"],
+  "procedure_codes": ["99213", "80053"],
+  "limit": 15
+}
+
+### 24. Similar Claims - Appendicitis / Surgery
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["K35.80"],
+  "procedure_codes": ["44970", "99285"],
+  "limit": 20
+}
+
+### 25. Similar Claims - Knee Replacement
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["M17.0", "M17.11"],
+  "procedure_codes": ["27447"],
+  "limit": 10
+}
+
+### 26. Similar Claims - Mental Health
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["F32.9", "F41.1"],
+  "procedure_codes": ["90834", "90837"],
+  "limit": 10
+}
+
+### 27. Similar Claims - Preventive Care
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["Z00.00"],
+  "procedure_codes": ["99385", "80061", "86580"],
+  "limit": 10
+}
+
+###############################################
+### STATISTICS & MONITORING
+###############################################
+
+### 28. Get Search Statistics
+GET {{baseUrl}}/search/stats HTTP/1.1
+Authorization: Bearer {{token}}
+
+###############################################
+### COMPLEX SEARCH SCENARIOS
+###############################################
+
+### 29. Multi-Condition Search
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "Find policies that cover both diabetes management and cardiovascular disease treatment with reasonable out-of-pocket costs",
+  "document_type": "policy",
+  "limit": 10,
+  "min_certainty": 0.75
+}
+
+### 30. Cost Analysis Search
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "What are the typical costs for emergency appendectomy including surgery and hospital stay?",
+  "document_type": "invoice",
+  "limit": 20,
+  "min_certainty": 0.7
+}
+
+### 31. Fraud Pattern Search
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "Claims with multiple high-level office visits on the same day or duplicate billing",
+  "document_type": "claim_form",
+  "limit": 25,
+  "min_certainty": 0.65
+}
+
+### 32. Network Provider Search
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "PPO network providers for orthopedic surgery and physical therapy",
+  "document_type": "policy",
+  "limit": 10,
+  "min_certainty": 0.7
+}
+
+### 33. Medication Coverage Search
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "insulin metformin prescription drug tier coverage formulary",
+  "alpha": 0.6,
+  "document_type": "policy",
+  "limit": 10
+}
+
+### 34. Pre-Authorization Requirements
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "Which procedures require prior authorization or precertification?",
+  "document_type": "policy",
+  "limit": 15,
+  "min_certainty": 0.7
+}
+
+### 35. Claim Denial Analysis
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "Claims that were denied due to medical necessity or experimental treatment",
+  "document_type": "claim_form",
+  "limit": 20,
+  "min_certainty": 0.65
+}
+
+###############################################
+### GRAPH TRAVERSAL SCENARIOS
+###############################################
+
+### 36. Multi-Hop Coverage Path
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "POL-2024-ABC123",
+  "service_code": "99499",
+  "max_hops": 5
+}
+
+### 37. Complex Claim Pattern
+POST {{baseUrl}}/search/graph/similar-claims HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "diagnosis_codes": ["I10", "E11.9", "E78.5"],
+  "procedure_codes": ["99214", "80053", "82947", "83721"],
+  "limit": 30
+}
+
+### 38. Relationship Chain Query
+POST {{baseUrl}}/search/graph/relationships HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "entity_id": "doc-123:insurance_company:HealthCare_Plus",
+  "direction": "out"
+}
+
+###############################################
+### PERFORMANCE TESTS
+###############################################
+
+### 39. Large Result Set Search
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "health insurance",
+  "limit": 50,
+  "min_certainty": 0.5
+}
+
+### 40. Low Certainty Search (More Results)
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "medical services",
+  "limit": 30,
+  "min_certainty": 0.4
+}
+
+### 41. High Certainty Search (Fewer, Better Results)
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "laparoscopic cholecystectomy with cholangiography",
+  "limit": 5,
+  "min_certainty": 0.9
+}
+
+###############################################
+### ERROR HANDLING TESTS
+###############################################
+
+### 42. Invalid Entity ID
+POST {{baseUrl}}/search/graph/relationships HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "entity_id": "nonexistent:entity:id",
+  "direction": "both"
+}
+
+### 43. Invalid Policy ID
+POST {{baseUrl}}/search/graph/coverage-path HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "policy_id": "INVALID-POLICY",
+  "service_code": "99214",
+  "max_hops": 3
+}
+
+### 44. Empty Query
+POST {{baseUrl}}/search/semantic HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "",
+  "limit": 10,
+  "min_certainty": 0.7
+}
+
+### 45. Invalid Alpha Value (should be clamped)
+POST {{baseUrl}}/search/hybrid HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "query": "test query",
+  "alpha": 1.5,
+  "limit": 10
+}
